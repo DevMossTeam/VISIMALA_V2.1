@@ -1,4 +1,3 @@
-
 package absensiowner;
 
 import java.awt.event.ActionEvent;
@@ -432,6 +431,8 @@ private void countAttendanceStatus() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        settingbutton = new javax.swing.JButton();
+        pdfbutton = new javax.swing.JButton();
         next2 = new javax.swing.JButton();
         table1 = new javax.swing.JScrollPane();
         timein = new javax.swing.JTable();
@@ -455,11 +456,29 @@ private void countAttendanceStatus() {
         cari1 = new javax.swing.JTextField();
         cari2 = new javax.swing.JTextField();
         num1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        bg = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(231, 231, 231));
+        setBackground(new java.awt.Color(237, 237, 237));
         setPreferredSize(new java.awt.Dimension(996, 595));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        settingbutton.setBorder(null);
+        settingbutton.setContentAreaFilled(false);
+        settingbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingbuttonActionPerformed(evt);
+            }
+        });
+        add(settingbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 50, 60));
+
+        pdfbutton.setBorder(null);
+        pdfbutton.setContentAreaFilled(false);
+        pdfbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfbuttonActionPerformed(evt);
+            }
+        });
+        add(pdfbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 50, 60));
 
         next2.setBorder(null);
         next2.setBorderPainted(false);
@@ -469,7 +488,7 @@ private void countAttendanceStatus() {
                 next2ActionPerformed(evt);
             }
         });
-        add(next2, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 510, 30, 20));
+        add(next2, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 500, 30, 20));
 
         timein.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         timein.setModel(new javax.swing.table.DefaultTableModel(
@@ -485,13 +504,13 @@ private void countAttendanceStatus() {
         timein.setRowHeight(30);
         table1.setViewportView(timein);
 
-        add(table1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 410, 120));
+        add(table1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 400, 120));
 
         TerlambatJ.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         TerlambatJ.setForeground(new java.awt.Color(255, 255, 255));
         TerlambatJ.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TerlambatJ.setText("-");
-        add(TerlambatJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 190, 40));
+        add(TerlambatJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 200, 40));
 
         timeout.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         timeout.setModel(new javax.swing.table.DefaultTableModel(
@@ -509,11 +528,11 @@ private void countAttendanceStatus() {
         timeout.setRowHeight(30);
         table2.setViewportView(timeout);
 
-        add(table2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 380, 410, 120));
+        add(table2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 380, 400, 120));
 
         detailwaktu.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         detailwaktu.setContentAreaFilled(false);
-        add(detailwaktu, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 190, 80, 30));
+        add(detailwaktu, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 200, 80, 30));
 
         detailpegawai.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         detailpegawai.setContentAreaFilled(false);
@@ -527,14 +546,14 @@ private void countAttendanceStatus() {
                 detailpegawaiActionPerformed(evt);
             }
         });
-        add(detailpegawai, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 80, 30));
+        add(detailpegawai, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 80, 30));
 
         num2.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         num2.setForeground(new java.awt.Color(255, 255, 255));
         num2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         num2.setText("1");
         num2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        add(num2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 513, 30, 20));
+        add(num2, new org.netbeans.lib.awtextra.AbsoluteConstraints(859, 499, 20, 30));
 
         HadirJ.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         HadirJ.setForeground(new java.awt.Color(255, 255, 255));
@@ -544,7 +563,7 @@ private void countAttendanceStatus() {
 
         downloadpdf.setBorderPainted(false);
         downloadpdf.setContentAreaFilled(false);
-        add(downloadpdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 120, 30));
+        add(downloadpdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 120, 30));
 
         prev2.setBorder(null);
         prev2.setBorderPainted(false);
@@ -554,7 +573,7 @@ private void countAttendanceStatus() {
                 prev2ActionPerformed(evt);
             }
         });
-        add(prev2, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 510, 30, 20));
+        add(prev2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 500, 30, 20));
 
         next1.setBorder(null);
         next1.setBorderPainted(false);
@@ -564,18 +583,18 @@ private void countAttendanceStatus() {
                 next1ActionPerformed(evt);
             }
         });
-        add(next1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 510, 30, 20));
+        add(next1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 500, 30, 20));
 
         lbl_jumlahuser.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         lbl_jumlahuser.setForeground(new java.awt.Color(255, 255, 255));
         lbl_jumlahuser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_jumlahuser.setText("-");
-        add(lbl_jumlahuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 200, 40));
+        add(lbl_jumlahuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 210, 40));
 
         lbl_year.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lbl_year.setForeground(new java.awt.Color(255, 255, 255));
         lbl_year.setText("-");
-        add(lbl_year, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 90, 110, -1));
+        add(lbl_year, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 100, 110, -1));
 
         total1.setText("-");
         add(total1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 510, 300, -1));
@@ -583,12 +602,12 @@ private void countAttendanceStatus() {
         lbl_date.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lbl_date.setForeground(new java.awt.Color(255, 255, 255));
         lbl_date.setText("-");
-        add(lbl_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 150, -1));
+        add(lbl_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 130, 150, -1));
 
         lbl_time.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lbl_time.setForeground(new java.awt.Color(255, 255, 255));
         lbl_time.setText("-");
-        add(lbl_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 150, 170, -1));
+        add(lbl_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 160, 170, -1));
 
         total2.setText("-");
         add(total2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 510, 290, -1));
@@ -601,10 +620,10 @@ private void countAttendanceStatus() {
                 prev1ActionPerformed(evt);
             }
         });
-        add(prev1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 510, 30, 20));
+        add(prev1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 500, 40, 20));
 
         cari1.setBorder(null);
-        add(cari1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 350, 90, 10));
+        add(cari1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, 90, -1));
 
         cari2.setBorder(null);
         cari2.addActionListener(new java.awt.event.ActionListener() {
@@ -612,17 +631,17 @@ private void countAttendanceStatus() {
                 cari2ActionPerformed(evt);
             }
         });
-        add(cari2, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 350, 80, 10));
+        add(cari2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 350, 90, -1));
 
         num1.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         num1.setForeground(new java.awt.Color(255, 255, 255));
         num1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         num1.setText("1");
         num1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        add(num1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 510, 30, 20));
+        add(num1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 498, 20, 30));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/absensiowner/desainAbsensiOwner.png"))); // NOI18N
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 0, -1, -1));
+        bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/absensiowner/bg.png"))); // NOI18N
+        add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
     }// </editor-fold>//GEN-END:initComponents
 
     private void next2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_next2ActionPerformed
@@ -671,16 +690,33 @@ private void countAttendanceStatus() {
 
     }//GEN-LAST:event_detailpegawaiMouseClicked
 
+    private void pdfbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfbuttonActionPerformed
+        Pilih framePilih = new Pilih(); // Pastikan nama frame dan constructor Pilih diubah sesuai
+        framePilih.setVisible(true);
+    }//GEN-LAST:event_pdfbuttonActionPerformed
 
+    private void settingbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingbuttonActionPerformed
+        Setting frameSetting = new Setting(); // Pastikan nama frame dan constructor Pilih diubah sesuai
+        frameSetting.setVisible(true);
+    }//GEN-LAST:event_settingbuttonActionPerformed
+//public static void main(String args[]) {
+//    java.awt.EventQueue.invokeLater(new Runnable() {
+//        public void run() {
+//            // Instantiate an object of the panelAbsenOwner class
+//            panelAbsenOwner frame = new panelAbsenOwner();
+//            frame.setVisible(true);
+//        }
+//    });
+//}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel HadirJ;
     private javax.swing.JLabel TerlambatJ;
+    private javax.swing.JLabel bg;
     private javax.swing.JTextField cari1;
     private javax.swing.JTextField cari2;
     private javax.swing.JButton detailpegawai;
     private javax.swing.JButton detailwaktu;
     private javax.swing.JButton downloadpdf;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lbl_date;
     private javax.swing.JLabel lbl_jumlahuser;
     private javax.swing.JLabel lbl_time;
@@ -689,8 +725,10 @@ private void countAttendanceStatus() {
     private javax.swing.JButton next2;
     private javax.swing.JLabel num1;
     private javax.swing.JLabel num2;
+    private javax.swing.JButton pdfbutton;
     private javax.swing.JButton prev1;
     private javax.swing.JButton prev2;
+    private javax.swing.JButton settingbutton;
     private javax.swing.JScrollPane table1;
     private javax.swing.JScrollPane table2;
     private javax.swing.JTable timein;
