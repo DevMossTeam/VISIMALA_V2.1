@@ -59,7 +59,6 @@ public class absen extends javax.swing.JPanel {
         Date currentDate = new Date();
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String currentTime = timeFormat.format(currentDate);
-//        this.userID = userId; 
         execute();
 
 //    if (currentTime.compareTo("05:00") >= 0 && currentTime.compareTo("12:00") <= 0) {

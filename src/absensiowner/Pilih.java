@@ -36,19 +36,21 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
-//import static testloginpdf.userId;
+import static login.Login.userId;
 
 public class Pilih extends javax.swing.JFrame {
 private String startDate;
 private String endDate;
 
-public Pilih() {
+public Pilih(String userId) {
     initComponents();
+    setUserID(userId); // Pass the user ID as it is
 }
 
-private void setUserID(int userID) {
+private void setUserID(String userID) {
     IDlabel.setText("User ID: " + userID);
 }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -201,6 +203,8 @@ private void setUserID(int userID) {
         // Simpan tanggal dari daris dan sampais ke variabel startDate dan endDate
         startDate = daris.getText();
         endDate = sampais.getText();
+        
+        System.out.println("UserID: " + userId);
 
         createPDF("Laporan Absensi.pdf", startDate, endDate);
     }//GEN-LAST:event_pdf_btnActionPerformed

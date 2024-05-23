@@ -18,6 +18,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import koneksi.koneksi;
+import static login.Login.userId;
 import mainOwner.MainOwner;
 
 public class panelAbsenOwner extends javax.swing.JPanel {
@@ -691,7 +692,7 @@ private void countAttendanceStatus() {
     }//GEN-LAST:event_detailpegawaiMouseClicked
 
     private void pdfbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfbuttonActionPerformed
-        Pilih framePilih = new Pilih(); // Pastikan nama frame dan constructor Pilih diubah sesuai
+        Pilih framePilih = new Pilih(userId);
         framePilih.setVisible(true);
     }//GEN-LAST:event_pdfbuttonActionPerformed
 
