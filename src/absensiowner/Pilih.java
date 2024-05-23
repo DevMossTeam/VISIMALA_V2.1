@@ -33,9 +33,24 @@ import javax.swing.JOptionPane;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import static login.Login.userId;
 
 public class Pilih extends javax.swing.JFrame {
@@ -44,12 +59,12 @@ private String endDate;
 
 public Pilih(String userId) {
     initComponents();
-    setUserID(userId); // Pass the user ID as it is
+//    setUserID(userId); // Pass the user ID as it is
 }
 
-private void setUserID(String userID) {
-    IDlabel.setText("User ID: " + userID);
-}
+//private void setUserID(String userID) {
+//    IDlabel.setText("User ID: " + userID);
+//}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -200,21 +215,125 @@ private void setUserID(String userID) {
     }//GEN-LAST:event_clear_btnActionPerformed
 
     private void pdf_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdf_btnActionPerformed
-        // Simpan tanggal dari daris dan sampais ke variabel startDate dan endDate
-        startDate = daris.getText();
-        endDate = sampais.getText();
-        
-        System.out.println("UserID: " + userId);
+    // Simpan tanggal dari daris dan sampais ke variabel startDate dan endDate
+    startDate = daris.getText();
+    endDate = sampais.getText();
+    
+    System.out.println("UserID: " + userId);
 
-        createPDF("Laporan Absensi.pdf", startDate, endDate);
+    // Generate PDF and send email
+    createAndSendPDF(startDate, endDate, userId);
     }//GEN-LAST:event_pdf_btnActionPerformed
-private void createPDF(String path, String startDate, String endDate) {
+private void createAndSendPDF(String startDate, String endDate, String userId) {
+    // Generate PDF
+    File tempFile = createPDF(startDate, endDate);
+
+    // Fetch recipient's email from the database
+    String recipientEmail = fetchUserEmail(userId);
+    if (recipientEmail == null || recipientEmail.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Unable to fetch recipient email.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Send email with the PDF attachment
+    sendEmail(recipientEmail, tempFile.getAbsolutePath());
+
+    // Delete the temporary file
+    tempFile.delete();
+}
+
+private String fetchUserEmail(String userId) {
+    String userEmail = null;
+    try (Connection conn = koneksi.configDB()) {
+        String query = "SELECT email FROM user WHERE id_user = ?";
+        try (PreparedStatement pst = conn.prepareStatement(query)) {
+            pst.setString(1, userId);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    userEmail = rs.getString("email");
+                }
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error fetching user email: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+    return userEmail;
+}
+
+private void sendEmail(String recipient, String attachmentPath) {
+    // Email configuration
+    String myEmail = "visimaladesktop@gmail.com";
+    String emailPassword = "cqos cciu knat feyp";
+    String subject = "Laporan Absensi";
+    String body = "Terlampir adalah laporan absensi.";
+
+    // Email properties
+    Properties props = new Properties();
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.socketFactory.port", "465");
+    props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.port", "465");
+
+    // Authenticator
+    Session session = Session.getDefaultInstance(props, new Authenticator() {
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(myEmail, emailPassword);
+        }
+    });
+
+    try {
+        // Create message
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(myEmail));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
+        message.setSubject(subject);
+
+        // Create the email body part
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setText(body);
+
+        // Create multipart
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+
+        // Attachment part
+        messageBodyPart = new MimeBodyPart();
+        DataSource source = new FileDataSource(attachmentPath);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(new File(attachmentPath).getName());
+        multipart.addBodyPart(messageBodyPart);
+
+        // Set content
+        message.setContent(multipart);
+
+        // Send email
+        Transport.send(message);
+        JOptionPane.showMessageDialog(this, "Email sent successfully.");
+    } catch (MessagingException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error occurred while sending email: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
+private File createPDF(String startDate, String endDate) {
     Map<String, List<Object[]>> groupedData = new TreeMap<>();
+
+    // Create a temporary file
+    File tempFile = null;
+    try {
+        tempFile = File.createTempFile("Absensi", ".pdf");
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, "Error creating temporary file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+        return null;
+    }
 
     try (Connection conn = koneksi.configDB()) {
         String query = "SELECT a.id_absensi, u.username, a.status_absensi, a.time_in, a.time_out " +
-                       "FROM absensi a JOIN user u ON a.id_user = u.id_user " +
-                       "WHERE a.time_in BETWEEN ? AND ?";
+                "FROM absensi a JOIN user u ON a.id_user = u.id_user " +
+                "WHERE a.time_in BETWEEN ? AND ?";
         try (PreparedStatement pst = conn.prepareStatement(query)) {
             pst.setString(1, startDate);
             pst.setString(2, endDate);
@@ -226,11 +345,11 @@ private void createPDF(String path, String startDate, String endDate) {
                         groupedData.put(bulanTahun, new ArrayList<>());
                     }
                     groupedData.get(bulanTahun).add(new Object[]{
-                        getDayFromDateTime(tgl),
-                        rs.getString("username"),
-                        rs.getString("status_absensi"),
-                        getTimeWithoutSeconds(rs.getString("time_in")),
-                        getTimeWithoutSeconds(rs.getString("time_out"))
+                            getDayFromDateTime(tgl),
+                            rs.getString("username"),
+                            rs.getString("status_absensi"),
+                            getTimeWithoutSeconds(rs.getString("time_in")),
+                            getTimeWithoutSeconds(rs.getString("time_out"))
                     });
                 }
             }
@@ -238,19 +357,19 @@ private void createPDF(String path, String startDate, String endDate) {
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error fetching data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
-        return;
+        return null;
     }
 
     // Check if any data was fetched
     if (groupedData.isEmpty()) {
         JOptionPane.showMessageDialog(null, "No data found for the given date range", "Info", JOptionPane.INFORMATION_MESSAGE);
-        return;
+        return null;
     }
 
     // Membuat dokumen PDF
     Document doc = new Document();
     try {
-        PdfWriter.getInstance(doc, new FileOutputStream(path));
+        PdfWriter.getInstance(doc, new FileOutputStream(tempFile));
         doc.open();
 
         // Judul
@@ -298,6 +417,9 @@ private void createPDF(String path, String startDate, String endDate) {
             doc.close();
         }
     }
+
+    // Return the temporary file
+    return tempFile;
 }
 
 private String getMonthYearFromDate(String date) {
@@ -323,6 +445,11 @@ private String getDayFromDateTime(String dateTime) {
 }
 
 private String getTimeWithoutSeconds(String dateTime) {
+    // Check if dateTime is null or empty
+    if (dateTime == null || dateTime.isEmpty()) {
+        return ""; // Return empty string if dateTime is null or empty
+    }
+    
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
     Date date;
     try {
