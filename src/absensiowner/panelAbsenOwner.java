@@ -155,16 +155,16 @@ private void loadTimeOutData() {
                     String namaPegawai = res.getString("Username");
                     String status;
 
-                    // Check if waktuAbsensi is not empty before extracting substring
-                    if (!waktuAbsensi.isEmpty() && waktuAbsensi.length() >= 16) {
-                        status = "Sesi Berakhir";
-                        // Extracting time out "HH:mm" format from datetime string
-                        String timeOut = waktuAbsensi.substring(11, 16);
-                        timeOutModel.addRow(new Object[]{idAbsensi, timeOut, namaPegawai, status});
-                    } else {
-                        status = "Masih Aktif";
-                        timeOutModel.addRow(new Object[]{idAbsensi, "", namaPegawai, status});
-                    }
+                    // Check if waktuAbsensi is null or empty before extracting substring
+                   if (waktuAbsensi != null && !waktuAbsensi.isEmpty() && waktuAbsensi.length() >= 16) {
+                       status = "Sesi Berakhir";
+                       // Extracting time out "HH:mm" format from datetime string
+                       String timeOut = waktuAbsensi.substring(11, 16);
+                       timeOutModel.addRow(new Object[]{idAbsensi, timeOut, namaPegawai, status});
+                   } else {
+                       status = "Masih Aktif";
+                       timeOutModel.addRow(new Object[]{idAbsensi, "", namaPegawai, status});
+                   }
                 }
             }
         }
@@ -291,7 +291,7 @@ private void cariData1(String kataKunci) {
                 "    absensi.time_in LIKE ? OR " +
                 "    user.Username LIKE ? OR " +  // Corrected table alias and column name
                 "    absensi.status_absensi LIKE ?) AND " +
-                "    absensi.status_absensi = 'Terlambat'";
+                "    absensi.status_absensi = ''";
 
         java.sql.Connection conn = (Connection) koneksi.configDB();
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -329,7 +329,7 @@ private void cariData2(String kataKunci) {
         // Gunakan prepared statement untuk menghindari SQL injection
         String query = "SELECT \n" +
                 "    absensi.id_absensi, \n" +
-                "    absensi.waktu_absensi, \n" +
+                "    absensi.time_out, \n" +
                 "    absensi.Username, \n" +
                 "    absensi.status_absensi \n" +
                 "FROM \n" +
@@ -339,7 +339,7 @@ private void cariData2(String kataKunci) {
                 "    absensi.waktu_absensi LIKE ? OR " +
                 "    absensi.Username LIKE ? OR " +
                 "    absensi.status_absensi LIKE ?) AND " +
-                "    absensi.status_absensi = 'Tepat Waktu'";
+                "    absensi.status_absensi = ''";
         
         java.sql.Connection conn = (Connection) koneksi.configDB();
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -354,7 +354,7 @@ private void cariData2(String kataKunci) {
 
                 tbl.addRow(new Object[]{
                         res.getString("absensi.id_absensi"),
-                        res.getString("absensi.yime_out"),
+                        res.getString("absensi.time_out"),
                         res.getString("absensi.id_user"),
                         statusText
                 });

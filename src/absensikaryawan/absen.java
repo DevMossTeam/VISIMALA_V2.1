@@ -732,9 +732,9 @@ private String getTimeStatus(String time) {
     int currentMinutes = Integer.parseInt(currentTimeParts[1]);
 
     if (currentHours > databaseHours || (currentHours == databaseHours && currentMinutes > databaseMinutes)) {
-        return "terlambat";
+        return "Terlambat";
     } else {
-        return "tepat waktu";
+        return "Tepat waktu";
     }
 }
 
