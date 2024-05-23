@@ -23,6 +23,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -659,41 +660,42 @@ private void execute() {
     }//GEN-LAST:event_cmdPreviousKeyPressed
 
     private void timeinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeinActionPerformed
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = now.format(dateFormatter);
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    String formattedDate = now.format(dateFormatter);
 
-        boolean recordExists = checkRecordExists(formattedDate);
+    boolean recordExists = checkRecordExists(formattedDate);
 
-        if (!recordExists) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            String formattedDateTime = now.format(dateTimeFormatter);
+    if (!recordExists) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedDateTime = now.format(dateTimeFormatter);
+        String time = formattedDateTime.substring(11, 16); // Extracting "HH:mm"
 
-            try (java.sql.Connection conn = koneksi.configDB();
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO absensi (status_absensi, id_absensi, id_user, time_in) VALUES (?, ?, ?, ?)")) {
-                // Set values for status_absensi, id_user, and time_in columns
-                String idAbsen = generateUserId(conn);
-                pstmt.setString(1, getTimeStatus(formattedDateTime.substring(11, 16))); // Set status based on time_in value (hours and minutes only)
-                pstmt.setString(2, idAbsen);
-                pstmt.setString(3, userId); // Replace someUserId with the actual user ID
-                pstmt.setString(4, formattedDateTime); // Insert the current date and time
+        try (java.sql.Connection conn = koneksi.configDB();
+             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO absensi (status_absensi, id_absensi, id_user, time_in) VALUES (?, ?, ?, ?)")) {
 
-                // Execute the INSERT query
-                pstmt.executeUpdate();
-                setTimeFromDatabase();
+            String idAbsen = generateUserId(conn);
+            pstmt.setString(1, getTimeStatus(time)); // Set status based on time_in value (hours and minutes only)
+            pstmt.setString(2, idAbsen);
+            pstmt.setString(3, userId); // Replace userId with the actual user ID
+            pstmt.setString(4, formattedDateTime); // Insert the current date and time
 
-                System.out.println("UserID: " + userId);
+            // Execute the INSERT query
+            pstmt.executeUpdate();
+            setTimeFromDatabase();
 
-                // Display a message indicating successful insertion
-                JOptionPane.showMessageDialog(this, "Time inserted into database successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // Display a message indicating that a record already exists for the current date
-            JOptionPane.showMessageDialog(this, "A record for today already exists.", "Warning", JOptionPane.WARNING_MESSAGE);
+            System.out.println("UserID: " + userId);
+
+            // Display a message indicating successful insertion
+            JOptionPane.showMessageDialog(this, "Time inserted into database successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        }
+    } else {
+        // Display a message indicating that a record already exists for the current date
+        JOptionPane.showMessageDialog(this, "A record for today already exists.", "Warning", JOptionPane.WARNING_MESSAGE);
+    }
+}
 
         // Method to check if a record for the specified date already exists in the database
         private boolean checkRecordExists(String date) {
@@ -715,16 +717,63 @@ private void execute() {
             return recordExists;
         }
 
-        private String getTimeStatus(String time) {
-            String[] parts = time.split(":");
-            int hours = Integer.parseInt(parts[0]);
-            int minutes = Integer.parseInt(parts[1]);
+private String getTimeStatus(String time) {
+    String databaseTime = getTimeFromDatabase();
 
-            if (hours > 7 || (hours == 7 && minutes > 0)) {
-                return "terlambat";
-            } else {
-                return "tepat waktu"; // You can set another status here if needed
+    if (databaseTime == null) {
+        throw new RuntimeException("Failed to retrieve waktuAbsensi from database.");
+    }
+
+    String[] parts = databaseTime.split(":");
+    int databaseHours = Integer.parseInt(parts[0]);
+    int databaseMinutes = Integer.parseInt(parts[1]);
+
+    String[] currentTimeParts = time.split(":");
+    int currentHours = Integer.parseInt(currentTimeParts[0]);
+    int currentMinutes = Integer.parseInt(currentTimeParts[1]);
+
+    if (currentHours > databaseHours || (currentHours == databaseHours && currentMinutes > databaseMinutes)) {
+        return "terlambat";
+    } else {
+        return "tepat waktu";
+    }
+}
+
+    private String getTimeFromDatabase() {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        String time = null;
+
+        try {
+            // Establish connection to the database using your config method
+            connection = koneksi.configDB();
+
+            // Create a statement
+            statement = connection.createStatement();
+
+            // Execute the query
+            String sql = "SELECT waktuAbsensi FROM setting_absensi LIMIT 1";
+            resultSet = statement.executeQuery(sql);
+
+            // Process the result set
+            if (resultSet.next()) {
+                time = resultSet.getString("waktuAbsensi");
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return time;
     }//GEN-LAST:event_timeinActionPerformed
 
     private void timeoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeoutActionPerformed

@@ -469,7 +469,7 @@ private void countAttendanceStatus() {
                 settingbuttonActionPerformed(evt);
             }
         });
-        add(settingbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 50, 60));
+        add(settingbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 50, 60));
 
         pdfbutton.setBorder(null);
         pdfbutton.setContentAreaFilled(false);
@@ -478,7 +478,7 @@ private void countAttendanceStatus() {
                 pdfbuttonActionPerformed(evt);
             }
         });
-        add(pdfbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 50, 60));
+        add(pdfbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 50, 60));
 
         next2.setBorder(null);
         next2.setBorderPainted(false);
@@ -488,7 +488,7 @@ private void countAttendanceStatus() {
                 next2ActionPerformed(evt);
             }
         });
-        add(next2, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 500, 30, 20));
+        add(next2, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 500, 30, 20));
 
         timein.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         timein.setModel(new javax.swing.table.DefaultTableModel(
@@ -510,7 +510,7 @@ private void countAttendanceStatus() {
         TerlambatJ.setForeground(new java.awt.Color(255, 255, 255));
         TerlambatJ.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TerlambatJ.setText("-");
-        add(TerlambatJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 200, 40));
+        add(TerlambatJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 190, 40));
 
         timeout.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         timeout.setModel(new javax.swing.table.DefaultTableModel(
@@ -546,20 +546,20 @@ private void countAttendanceStatus() {
                 detailpegawaiActionPerformed(evt);
             }
         });
-        add(detailpegawai, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 80, 30));
+        add(detailpegawai, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 70, 30));
 
         num2.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         num2.setForeground(new java.awt.Color(255, 255, 255));
         num2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         num2.setText("1");
         num2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        add(num2, new org.netbeans.lib.awtextra.AbsoluteConstraints(859, 499, 20, 30));
+        add(num2, new org.netbeans.lib.awtextra.AbsoluteConstraints(857, 499, 10, 30));
 
         HadirJ.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         HadirJ.setForeground(new java.awt.Color(255, 255, 255));
         HadirJ.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         HadirJ.setText("-");
-        add(HadirJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 190, 40));
+        add(HadirJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 170, 40));
 
         downloadpdf.setBorderPainted(false);
         downloadpdf.setContentAreaFilled(false);
@@ -573,7 +573,7 @@ private void countAttendanceStatus() {
                 prev2ActionPerformed(evt);
             }
         });
-        add(prev2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 500, 30, 20));
+        add(prev2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 500, 30, 20));
 
         next1.setBorder(null);
         next1.setBorderPainted(false);
@@ -583,18 +583,18 @@ private void countAttendanceStatus() {
                 next1ActionPerformed(evt);
             }
         });
-        add(next1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 500, 30, 20));
+        add(next1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 500, 30, 20));
 
         lbl_jumlahuser.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         lbl_jumlahuser.setForeground(new java.awt.Color(255, 255, 255));
         lbl_jumlahuser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_jumlahuser.setText("-");
-        add(lbl_jumlahuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 210, 40));
+        add(lbl_jumlahuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 190, 40));
 
         lbl_year.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lbl_year.setForeground(new java.awt.Color(255, 255, 255));
         lbl_year.setText("-");
-        add(lbl_year, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 100, 110, -1));
+        add(lbl_year, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 100, 150, -1));
 
         total1.setText("-");
         add(total1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 510, 300, -1));
@@ -620,10 +620,10 @@ private void countAttendanceStatus() {
                 prev1ActionPerformed(evt);
             }
         });
-        add(prev1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 500, 40, 20));
+        add(prev1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 500, 30, 20));
 
         cari1.setBorder(null);
-        add(cari1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, 90, -1));
+        add(cari1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, 80, -1));
 
         cari2.setBorder(null);
         cari2.addActionListener(new java.awt.event.ActionListener() {
@@ -631,17 +631,17 @@ private void countAttendanceStatus() {
                 cari2ActionPerformed(evt);
             }
         });
-        add(cari2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 350, 90, -1));
+        add(cari2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 350, 70, -1));
 
         num1.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         num1.setForeground(new java.awt.Color(255, 255, 255));
         num1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         num1.setText("1");
         num1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        add(num1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 498, 20, 30));
+        add(num1, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 498, 10, 30));
 
         bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/absensiowner/bg.png"))); // NOI18N
-        add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 600));
+        add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 600));
     }// </editor-fold>//GEN-END:initComponents
 
     private void next2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_next2ActionPerformed

@@ -171,7 +171,7 @@ public class Setting extends javax.swing.JFrame {
                 confirmActionPerformed(evt);
             }
         });
-        getContentPane().add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 100, 30));
+        getContentPane().add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 100, 20));
 
         combopanel.setBackground(new java.awt.Color(255, 255, 255));
 

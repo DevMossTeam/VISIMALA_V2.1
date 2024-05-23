@@ -193,7 +193,7 @@ private void setUserID(int userID) {
     }//GEN-LAST:event_kembaliMouseClicked
 
     private void clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_btnActionPerformed
-            sampais.setText("");
+    sampais.setText("");
     daris.setText("");
     }//GEN-LAST:event_clear_btnActionPerformed
 
