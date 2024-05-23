@@ -42,54 +42,62 @@ public class Setting extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> Platform.runLater(this::settingJavaFXPanel));
     }
 
-    private void settingJavaFXPanel() {
-        // Create ComboBoxes for hours and minutes
-        hours = new ComboBox<>();
-        minutes = new ComboBox<>();
+private void settingJavaFXPanel() {
+    // Create ComboBoxes for hours and minutes
+    hours = new ComboBox<>();
+    minutes = new ComboBox<>();
 
-        for (int i = 0; i < 24; i++) {
-            hours.getItems().add(String.format("%02d", i));
-        }
-
-        for (int i = 0; i < 60; i++) {
-            minutes.getItems().add(String.format("%02d", i));
-        }
-
-        // Retrieve default time from the database
-        String defaultTime = getDefaultTimeFromDatabase();
-
-        // Set default time to ComboBoxes
-        if (defaultTime != null) {
-            String[] timeParts = defaultTime.split(":");
-            hours.setValue(timeParts[0]);
-            minutes.setValue(timeParts[1]);
-        } else {
-            // If default time is null, set default to 08:00
-            hours.setValue("08");
-            minutes.setValue("00");
-        }
-
-        // Set the font for the ComboBoxes
-        hours.setStyle("-fx-font-family: Arial; -fx-font-weight: bold; -fx-font-size: 14px;");
-        minutes.setStyle("-fx-font-family: Arial; -fx-font-weight: bold; -fx-font-size: 14px;");
-
-        // Set the size for the ComboBoxes
-        hours.setPrefSize(110, 40);
-        minutes.setPrefSize(110, 40);
-
-        HBox hBox = new HBox(10, hours, minutes);
-        hBox.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(hBox, 320, 100);
-
-        // Set the background color of the HBox to white
-        hBox.setStyle("-fx-background-color: #FFFFFF;");
-
-        jfxPanel.setScene(scene);
-
-        // Listener to get selected time
-        hours.setOnAction(event -> updateSelectedTime());
-        minutes.setOnAction(event -> updateSelectedTime());
+    for (int i = 0; i < 24; i++) {
+        hours.getItems().add(String.format("%02d", i));
     }
+
+    for (int i = 0; i < 60; i++) {
+        minutes.getItems().add(String.format("%02d", i));
+    }
+
+    // Retrieve default time from the database
+    String defaultTime = getDefaultTimeFromDatabase();
+
+    // Set default time to ComboBoxes
+    if (defaultTime != null) {
+        String[] timeParts = defaultTime.split(":");
+        hours.setValue(timeParts[0]);
+        minutes.setValue(timeParts[1]);
+    } else {
+        // If default time is null, set default to 08:00
+        hours.setValue("08");
+        minutes.setValue("00");
+    }
+
+    // Set the font for the ComboBoxes
+    hours.setStyle("-fx-font-family: Arial; -fx-font-weight: bold; -fx-font-size: 12px;");
+    minutes.setStyle("-fx-font-family: Arial; -fx-font-weight: bold; -fx-font-size: 12px;");
+
+    // Set the size for the ComboBoxes
+    hours.setPrefSize(80, 30);
+    minutes.setPrefSize(80, 30);
+
+    // Create labels for hours and minutes
+    javafx.scene.control.Label hoursLabel = new javafx.scene.control.Label("Jam:");
+    javafx.scene.control.Label minutesLabel = new javafx.scene.control.Label("Menit:");
+
+    // Set the font for the labels
+    hoursLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+    minutesLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+
+    HBox hBox = new HBox(5, hoursLabel, hours, minutesLabel, minutes);
+    hBox.setAlignment(Pos.CENTER);
+    Scene scene = new Scene(hBox, 320, 80);
+
+    // Set the background color of the HBox to white
+    hBox.setStyle("-fx-background-color: #FFFFFF;");
+
+    jfxPanel.setScene(scene);
+
+    // Listener to get selected time
+    hours.setOnAction(event -> updateSelectedTime());
+    minutes.setOnAction(event -> updateSelectedTime());
+}
 
     private String getDefaultTimeFromDatabase() {
         String defaultTime = null;
