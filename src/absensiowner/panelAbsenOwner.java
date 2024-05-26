@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -25,10 +24,6 @@ public class panelAbsenOwner extends javax.swing.JPanel {
 
     private Timer timer;
     private Timer t;
-//    private JButton next1;
-//    private JButton prev2;
-//    private JButton next2;
-//    private JButton prev1;
     private int currentPage1 = 1; // Current page for time in data
     private int currentPage2 = 1;
     private final int rowsPerPage = 3; // Assuming 3 rows per page
@@ -273,95 +268,97 @@ private void updateTotalEntriesLabel2(int startRow, int endRow) {
         t.start();
     }
     
-private void cariData1(String kataKunci) {
-    DefaultTableModel tbl = (DefaultTableModel) timein.getModel();
-    tbl.setRowCount(0); // Clear existing rows
+private void searchTimeInData(String searchTerm) {
+    DefaultTableModel timeInModel = new DefaultTableModel();
+    timeInModel.addColumn("ID");
+    timeInModel.addColumn("Jam Masuk");
+    timeInModel.addColumn("Nama Pegawai");
+    timeInModel.addColumn("Status");
 
     try {
-        String query = "SELECT " +
-                "    absensi.id_absensi, " +
-                "    absensi.time_in, " +
-                "    user.Username, " +  // Corrected column name
-                "    absensi.status_absensi " +
-                "FROM " +
-                "    absensi " +
-                "JOIN user ON absensi.id_user = user.id_user " + // Join with user table
-                "WHERE " +
-                "    (absensi.id_absensi LIKE ? OR " +
-                "    absensi.time_in LIKE ? OR " +
-                "    user.Username LIKE ? OR " +  // Corrected table alias and column name
-                "    absensi.status_absensi LIKE ?) AND " +
-                "    absensi.status_absensi = ''";
+        String dataSql = "SELECT absensi.id_absensi, absensi.time_in, user.Username, absensi.status_absensi " +
+                         "FROM absensi " +
+                         "JOIN user ON absensi.id_user = user.id_user " +
+                         "WHERE absensi.time_in LIKE ? OR user.Username LIKE ? OR absensi.status_absensi LIKE ?";
+        
+        try (Connection conn = koneksi.configDB();
+             PreparedStatement dataStmt = conn.prepareStatement(dataSql)) {
 
-        java.sql.Connection conn = (Connection) koneksi.configDB();
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            for (int i = 1; i <= 4; i++) {
-                pstmt.setString(i, "%" + kataKunci + "%");
-            }
+            // Set search term parameters
+            String searchPattern = "%" + searchTerm + "%";
+            dataStmt.setString(1, searchPattern);
+            dataStmt.setString(2, searchPattern);
+            dataStmt.setString(3, searchPattern);
 
-            ResultSet res = pstmt.executeQuery();
+            try (ResultSet res = dataStmt.executeQuery()) {
+                while (res.next()) {
+                    String idAbsensi = res.getString("id_absensi");
+                    String waktuAbsensi = res.getString("time_in");
+                    String namaPegawai = res.getString("Username");
+                    String statusAbsensi = res.getString("status_absensi");
 
-            while (res.next()) {
-                String statusText = res.getString("absensi.status_absensi");
+                    // Extracting time in "HH:mm" format from datetime string
+                    String timeIn = waktuAbsensi.substring(11, 16);
 
-                tbl.addRow(new Object[]{
-                        res.getString("absensi.id_absensi"),
-                        res.getString("absensi.time_in"),
-                        res.getString("user.Username"), // Corrected column name
-                        statusText
-                });
+                    timeInModel.addRow(new Object[]{idAbsensi, timeIn, namaPegawai, statusAbsensi});
+                }
             }
         }
+        timein.setModel(timeInModel);
+        setTableAlignment(timein);
+        updateTotalEntriesLabel1(0, timeInModel.getRowCount());
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
+        handleException("Error searching time in data", e);
     }
 }
-        private void search1() {
-        String searchText1 = cari1.getText().trim(); // Get the text from the JTextField
-        cariData1(searchText1); // Call the search method with the text
-    }
 
-private void cariData2(String kataKunci) {
-    DefaultTableModel tbl = (DefaultTableModel) timein.getModel();
-    tbl.setRowCount(0); // Bersihkan baris yang sudah ada
+private void searchTimeOutData(String searchTerm) {
+    DefaultTableModel timeOutModel = new DefaultTableModel();
+    timeOutModel.addColumn("ID");
+    timeOutModel.addColumn("Jam Keluar");
+    timeOutModel.addColumn("Nama Pegawai");
+    timeOutModel.addColumn("Status");
 
     try {
-        // Gunakan prepared statement untuk menghindari SQL injection
-        String query = "SELECT \n" +
-                "    absensi.id_absensi, \n" +
-                "    absensi.time_out, \n" +
-                "    absensi.Username, \n" +
-                "    absensi.status_absensi \n" +
-                "FROM \n" +
-                "    absensi \n" +
-                "WHERE \n" +
-                "    (absensi.id_absensi LIKE ? OR " +
-                "    absensi.waktu_absensi LIKE ? OR " +
-                "    absensi.Username LIKE ? OR " +
-                "    absensi.status_absensi LIKE ?) AND " +
-                "    absensi.status_absensi = ''";
+        String dataSql = "SELECT absensi.id_absensi, absensi.time_out, user.Username, absensi.status_absensi " +
+                         "FROM absensi " +
+                         "JOIN user ON absensi.id_user = user.id_user " +
+                         "WHERE absensi.time_out LIKE ? OR user.Username LIKE ? OR absensi.status_absensi LIKE ?";
         
-        java.sql.Connection conn = (Connection) koneksi.configDB();
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            for (int i = 1; i <= 4; i++) {
-                pstmt.setString(i, "%" + kataKunci + "%");
-            }
+        try (Connection conn = koneksi.configDB();
+             PreparedStatement dataStmt = conn.prepareStatement(dataSql)) {
 
-            ResultSet res = pstmt.executeQuery();
+            // Set search term parameters
+            String searchPattern = "%" + searchTerm + "%";
+            dataStmt.setString(1, searchPattern);
+            dataStmt.setString(2, searchPattern);
+            dataStmt.setString(3, searchPattern);
 
-            while (res.next()) {
-                String statusText = res.getString("absensi.status_absensi");
+            try (ResultSet res = dataStmt.executeQuery()) {
+                while (res.next()) {
+                    String idAbsensi = res.getString("id_absensi");
+                    String waktuAbsensi = res.getString("time_out");
+                    String namaPegawai = res.getString("Username");
+                    String status;
 
-                tbl.addRow(new Object[]{
-                        res.getString("absensi.id_absensi"),
-                        res.getString("absensi.time_out"),
-                        res.getString("absensi.id_user"),
-                        statusText
-                });
+                    // Check if waktuAbsensi is null or empty before extracting substring
+                    if (waktuAbsensi != null && !waktuAbsensi.isEmpty() && waktuAbsensi.length() >= 16) {
+                        status = "Sesi Berakhir";
+                        // Extracting time out "HH:mm" format from datetime string
+                        String timeOut = waktuAbsensi.substring(11, 16);
+                        timeOutModel.addRow(new Object[]{idAbsensi, timeOut, namaPegawai, status});
+                    } else {
+                        status = "Masih Aktif";
+                        timeOutModel.addRow(new Object[]{idAbsensi, "", namaPegawai, status});
+                    }
+                }
             }
         }
+        timeout.setModel(timeOutModel);
+        setTableAlignment(timeout);
+        updateTotalEntriesLabel2(0, timeOutModel.getRowCount());
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
+        handleException("Error searching time out data", e);
     }
 }
 

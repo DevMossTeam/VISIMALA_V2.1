@@ -343,7 +343,7 @@ private void cariData(String keyword) {
         tb_user.setRowHeight(25);
         jScrollPane2.setViewportView(tb_user);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 940, 350));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 940, 350));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/usser/users.png"))); // NOI18N
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, 60));
@@ -357,7 +357,6 @@ private void cariData(String keyword) {
         txt_cari.setForeground(new java.awt.Color(255, 255, 255));
         txt_cari.setText("Search...");
         txt_cari.setBorder(null);
-        txt_cari.setSelectedTextColor(new java.awt.Color(255, 255, 255));
         txt_cari.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txt_cariFocusGained(evt);
@@ -390,7 +389,7 @@ private void cariData(String keyword) {
         add(TambahUs, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/usser/desainTabel.png"))); // NOI18N
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 0, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txt_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cariActionPerformed
